@@ -5,3 +5,4 @@
 
 export * from './bluetooth/index.js';
 export * from './ageVerification/index.js';
+export * from './profile/index.js';

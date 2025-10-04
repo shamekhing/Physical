@@ -73,6 +73,12 @@
   padding-bottom: 10px;
 }
 
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .age-verification-container {
   display: flex;
   flex-direction: column;
