@@ -3,7 +3,7 @@
  * Exports all Bluetooth-related functionality
  */
 
-export { BluetoothManager } from './bluetoothManager.js';
-export { BluetoothServiceManager } from './bluetoothService.js';
-export { useBluetooth } from './useBluetooth.js';
-export { default as BluetoothProximity } from './BluetoothProximity.js';
+export { BluetoothManager } from './services/bluetoothManager.js';
+export { BluetoothServiceManager } from './services/bluetoothService.js';
+export { useBluetooth } from './hooks/useBluetooth.js';
+export { default as BluetoothProximity } from './components/BluetoothProximity.js';

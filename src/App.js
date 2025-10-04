@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import BluetoothProximity from './features/bluetooth/BluetoothProximity.js';
+import BluetoothProximity from './features/bluetooth/components/BluetoothProximity.js';
 import { AgeVerificationSetup, AgeVerificationStatus } from './features/ageVerification/index.js';
 
 function App() {
