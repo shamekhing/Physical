@@ -1,0 +1,83 @@
+---
+alwaysApply: true
+---
+
+## 1. Data & Code Quality  
+- ❌ NO MOCK DATA allowed in production code.  
+- ✅ Test data (if required) must only exist in `/tests/data/`.  
+- All code must follow the project’s linting and formatting rules.  
+- No unused variables, imports, or dead code.  
+- Functions/classes must have documented input and output expectations.  
+
+---
+
+## 2. Project Structure & Organization  
+- Each feature must exist in its own folder:  
+
+  ```
+  /features/<feature-name>/
+      README.md
+      src/
+      tests/
+  ```  
+
+- Each feature folder **must include**:  
+  - `README.md` (see Section 3).  
+  - Source code files.  
+  - Unit and integration tests.  
+
+- When moving or renaming files:  
+  - All **import paths must be updated**.  
+  - A **full build must pass** before committing.  
+
+---
+
+## 3. Documentation Requirements  
+### Feature README.md Template  
+
+```md
+# <Feature Name>  
+
+## Description  
+<Brief explanation of the feature>  
+
+## Usage Notes  
+<Setup or runtime instructions>  
+
+## Test List  
+
+| # | Test Name      | Description                        |  
+|---|----------------|------------------------------------|  
+| 1 | ExampleTest    | Verifies example functionality     |  
+| 2 | APIResponse    | Ensures correct data from endpoint |  
+
+## Limitations / Assumptions  
+- <List constraints if any>  
+```
+
+- Each feature `README.md` must contain a **test list table**.  
+- The root `README.md` must describe:  
+  - Project overview.  
+  - Folder structure.  
+  - Contribution guidelines.  
+
+---
+
+## 4. Testing Standards  
+- Tests must run until **all pass** (manual termination not allowed).  
+- Each feature must include:  
+  - **Unit tests** (module-level).  
+  - **Integration tests** (system-level).  
+- Minimum test coverage: **≥ 80%**.  
+- Test data must be reproducible (random seeds fixed).  
+
+---
+
+## 5. Validation & CI/CD  
+- **Pre-commit**: run linting, formatting, type checks.  
+- **Pre-push**: run full test suite.  
+- **CI/CD Rules**:  
+  - PRs must pass all builds & tests.  
+  - No feature is merged without updated README and test list.  
+
+---
