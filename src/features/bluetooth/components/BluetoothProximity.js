@@ -56,10 +56,6 @@ const BluetoothProximity = () => {
     }
   };
 
-  const getDevicesInCloseRange = () => getDevicesInRange(10); // Within 10m
-  const getDevicesInMediumRange = () => getDevicesInRange(25); // Within 25m
-  const getDevicesInFarRange = () => getDevicesInRange(50); // Within 50m
-
   if (!isSupported) {
     return (
       <div className="bluetooth-proximity">
@@ -124,19 +120,7 @@ const BluetoothProximity = () => {
       <div className="device-stats">
         <div className="stat">
           <span className="stat-number">{deviceCount}</span>
-          <span className="stat-label">Total Users</span>
-        </div>
-        <div className="stat">
-          <span className="stat-number">{getDevicesInCloseRange().length}</span>
-          <span className="stat-label">Close (≤10m)</span>
-        </div>
-        <div className="stat">
-          <span className="stat-number">{getDevicesInMediumRange().length}</span>
-          <span className="stat-label">Medium (≤25m)</span>
-        </div>
-        <div className="stat">
-          <span className="stat-number">{getDevicesInFarRange().length}</span>
-          <span className="stat-label">Far (≤50m)</span>
+          <span className="stat-label">Users Nearby</span>
         </div>
       </div>
 
@@ -173,33 +157,9 @@ const BluetoothProximity = () => {
                   </div>
                 </div>
                 
-                <div className="device-details">
-                  <div className="detail">
-                    <span className="label">Distance:</span>
-                    <span className="value">{device.distanceFormatted}</span>
-                  </div>
-                  <div className="detail">
-                    <span className="label">RSSI:</span>
-                    <span className="value">{device.rssi ? device.rssi.toFixed(1) : 'N/A'} dBm</span>
-                  </div>
-                  <div className="detail">
-                    <span className="label">Last Seen:</span>
-                    <span className="value">
-                      {new Date(device.lastSeen).toLocaleTimeString()}
-                    </span>
-                  </div>
-                  <div className="detail">
-                    <span className="label">Connected:</span>
-                    <span className={`value ${device.connected ? 'connected' : 'disconnected'}`}>
-                      {device.connected ? 'Yes' : 'No'}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="device-range">
-                  <div className={`range-indicator ${getRangeClass(device.distance)}`}>
-                    {getRangeLabel(device.distance)}
-                  </div>
+                <div className="device-actions">
+                  <button className="btn-connect">Connect</button>
+                  <button className="btn-view">View Profile</button>
                 </div>
               </div>
             ))}
@@ -208,28 +168,6 @@ const BluetoothProximity = () => {
       </div>
     </div>
   );
-};
-
-/**
- * Get CSS class for distance range
- * @param {number} distance - Distance in meters
- * @returns {string} CSS class name
- */
-const getRangeClass = (distance) => {
-  if (distance <= 10) return 'close';
-  if (distance <= 25) return 'medium';
-  return 'far';
-};
-
-/**
- * Get label for distance range
- * @param {number} distance - Distance in meters
- * @returns {string} Range label
- */
-const getRangeLabel = (distance) => {
-  if (distance <= 10) return 'Close Range';
-  if (distance <= 25) return 'Medium Range';
-  return 'Far Range';
 };
 
 export default BluetoothProximity;

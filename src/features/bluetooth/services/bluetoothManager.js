@@ -142,18 +142,11 @@ export class BluetoothManager {
     try {
       console.log('Scanning for Physical app users...');
       
-      // Simulate discovering nearby Physical app users
-      // In a real native app, this would use BLE advertising/scanning
-      // Web Bluetooth has limitations - it requires user interaction for pairing
+      // Web Bluetooth requires user interaction for each device
+      // This is a limitation of the Web Bluetooth API
+      // In a real implementation, this would be a native app with BLE advertising
       
-      // Generate simulated nearby users for demonstration
-      const simulatedUsers = this._generateSimulatedNearbyUsers();
-      
-      simulatedUsers.forEach(user => {
-        this.nearbyDevices.set(user.id, user);
-      });
-      
-      this.updateDevices();
+      console.log('No Physical app users found - Web Bluetooth requires manual device pairing');
       
     } catch (error) {
       console.error('Error during discovery:', error);
@@ -161,47 +154,6 @@ export class BluetoothManager {
     }
   }
 
-  /**
-   * Generate simulated nearby users for testing
-   * In production, this would be replaced with actual BLE scanning
-   * @private
-   */
-  _generateSimulatedNearbyUsers() {
-    const userCount = Math.floor(Math.random() * 3) + 1; // 1-3 users
-    const users = [];
-    
-    for (let i = 0; i < userCount; i++) {
-      const distance = Math.random() * 45 + 5; // 5-50m
-      const rssi = this._distanceToRSSI(distance);
-      
-      const user = {
-        id: generateDeviceId(),
-        name: `Physical User ${Math.floor(Math.random() * 1000)}`,
-        distance: distance,
-        rssi: rssi,
-        lastSeen: new Date(),
-        connected: false,
-        isPhysicalAppUser: true,
-        distanceFormatted: distance < 1 ? `${(distance * 100).toFixed(0)}cm` : `${distance.toFixed(1)}m`
-      };
-      
-      users.push(user);
-    }
-    
-    return users;
-  }
-
-  /**
-   * Convert distance to RSSI value
-   * @param {number} distance - Distance in meters
-   * @returns {number} RSSI value in dBm
-   * @private
-   */
-  _distanceToRSSI(distance) {
-    const txPower = -59;
-    const n = 2; // Path loss exponent
-    return txPower - 10 * n * Math.log10(distance);
-  }
 
 
   /**

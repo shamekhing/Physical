@@ -172,13 +172,6 @@ const Dashboard = () => {
         >
           <span className="nav-icon">🔍</span>
           <span className="nav-label">Discover</span>
-        </button>
-        <button 
-          className={`nav-item ${activeSection === 'bluetooth' ? 'active' : ''}`}
-          onClick={() => handleSectionChange('bluetooth')}
-        >
-          <span className="nav-icon">📡</span>
-          <span className="nav-label">Bluetooth</span>
           {deviceCount > 0 && (
             <span className="nav-badge">{deviceCount}</span>
           )}
@@ -295,48 +288,15 @@ const Dashboard = () => {
         {activeSection === 'discover' && (
           <div className="dashboard-section discover-section">
             <div className="section-header">
-              <h2>Discover People</h2>
-              <div className="discovery-filters">
-                <select className="filter-select">
-                  <option value="all">All People</option>
-                  <option value="nearby">Nearby</option>
-                  <option value="interests">Similar Interests</option>
-                </select>
-              </div>
+              <h2>Discover People Nearby</h2>
             </div>
             
             <div className="discovery-content">
-              <div className="discovery-placeholder">
-                <div className="placeholder-icon">🔍</div>
-                <h3>Discovery Feature</h3>
-                <p>Find people nearby with similar interests</p>
-                <p className="placeholder-note">
-                  This feature will show nearby users based on your discovery settings
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Bluetooth Section */}
-        {activeSection === 'bluetooth' && (
-          <div className="dashboard-section bluetooth-section">
-            <div className="section-header">
-              <h2>Bluetooth Proximity</h2>
-              <div className="bluetooth-status">
-                <span className={`status-indicator ${bluetoothStatus}`}>
-                  {bluetoothStatus === 'scanning' ? 'Scanning...' : 
-                   bluetoothStatus === 'stopped' ? 'Stopped' :
-                   bluetoothStatus === 'error' ? 'Error' : 'Ready'}
-                </span>
-              </div>
-            </div>
-            
-            <div className="bluetooth-content">
               <BluetoothProximity />
             </div>
           </div>
         )}
+
 
         {/* Age Verification Section */}
         {activeSection === 'age-verification' && (
