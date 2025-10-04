@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import BluetoothProximity from './components/BluetoothProximity.js';
+import BluetoothProximity from './features/bluetooth/BluetoothProximity.js';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Physical - Bluetooth Proximity Detection</h1>
-        <p>A privacy-first, peer-to-peer meeting app</p>
+        <h1>Physical - User Discovery</h1>
+        <p>Find other Physical app users nearby - No pairing required!</p>
       </header>
       
       <main className="App-main">

@@ -6,10 +6,10 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import BluetoothProximity from './BluetoothProximity.js';
-import { useBluetooth } from '../features/bluetooth/useBluetooth.js';
+import { useBluetooth } from './useBluetooth.js';
 
 // Mock the useBluetooth hook
-jest.mock('../features/bluetooth/useBluetooth.js');
+jest.mock('./useBluetooth.js');
 
 describe('BluetoothProximity', () => {
   const mockUseBluetooth = useBluetooth;
@@ -61,7 +61,7 @@ describe('BluetoothProximity', () => {
 
     expect(screen.getByText('🔵 Bluetooth Proximity Detection')).toBeInTheDocument();
     expect(screen.getByText('Ready to scan')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Start Scanning/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Discover Physical Users/i })).toBeInTheDocument();
   });
 
   it('should show error message when there is an error', () => {
@@ -104,7 +104,7 @@ describe('BluetoothProximity', () => {
     render(<BluetoothProximity />);
 
     expect(screen.getByText('Scanning for devices...')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Scanning.../i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /Discovering Users.../i })).toBeDisabled();
   });
 
   it('should call startScanning when Start Scanning button is clicked', async () => {
@@ -126,7 +126,7 @@ describe('BluetoothProximity', () => {
 
     render(<BluetoothProximity />);
 
-    const startButton = screen.getByRole('button', { name: /Start Scanning/i });
+    const startButton = screen.getByRole('button', { name: /Discover Physical Users/i });
     fireEvent.click(startButton);
 
     expect(mockStartScanning).toHaveBeenCalled();
@@ -151,7 +151,7 @@ describe('BluetoothProximity', () => {
 
     render(<BluetoothProximity />);
 
-    const stopButton = screen.getByRole('button', { name: /Stop Scanning/i });
+    const stopButton = screen.getByRole('button', { name: /Stop Discovery/i });
     fireEvent.click(stopButton);
 
     expect(mockStopScanning).toHaveBeenCalled();
@@ -178,17 +178,18 @@ describe('BluetoothProximity', () => {
 
     render(<BluetoothProximity />);
 
-    const clearButton = screen.getByRole('button', { name: /Clear Devices/i });
+    const clearButton = screen.getByRole('button', { name: /Clear Users/i });
     fireEvent.click(clearButton);
 
     expect(mockClearDevices).toHaveBeenCalled();
   });
 
   it('should display device statistics correctly', () => {
-    const mockGetDevicesInRange = jest.fn()
-      .mockReturnValueOnce([{ id: 'device1' }]) // Close range
-      .mockReturnValueOnce([{ id: 'device1' }, { id: 'device2' }]) // Medium range
-      .mockReturnValueOnce([{ id: 'device1' }, { id: 'device2' }, { id: 'device3' }]); // Far range
+    const mockGetDevicesInRange = jest.fn((maxDistance) => {
+      if (maxDistance <= 10) return [{ id: 'device1' }];
+      if (maxDistance <= 25) return [{ id: 'device1' }, { id: 'device2' }];
+      return [{ id: 'device1' }, { id: 'device2' }, { id: 'device3' }];
+    });
 
     mockUseBluetooth.mockReturnValue({
       isSupported: true,
@@ -211,8 +212,8 @@ describe('BluetoothProximity', () => {
 
     render(<BluetoothProximity />);
 
-    expect(screen.getByText('3')).toBeInTheDocument(); // Total devices
-    expect(screen.getByText('Total Devices')).toBeInTheDocument();
+    expect(screen.getAllByText('3')).toHaveLength(2); // Total users and Far range both show 3
+    expect(screen.getByText('Total Users')).toBeInTheDocument();
     expect(screen.getByText('Close (≤10m)')).toBeInTheDocument();
     expect(screen.getByText('Medium (≤25m)')).toBeInTheDocument();
     expect(screen.getByText('Far (≤50m)')).toBeInTheDocument();
@@ -257,7 +258,7 @@ describe('BluetoothProximity', () => {
 
     render(<BluetoothProximity />);
 
-    expect(screen.getByText('Nearby Devices (2)')).toBeInTheDocument();
+    expect(screen.getByText('Physical App Users Nearby (2)')).toBeInTheDocument();
     expect(screen.getByText('Test Device 1')).toBeInTheDocument();
     expect(screen.getByText('Test Device 2')).toBeInTheDocument();
     expect(screen.getByText('5m')).toBeInTheDocument();
@@ -284,8 +285,8 @@ describe('BluetoothProximity', () => {
 
     render(<BluetoothProximity />);
 
-    expect(screen.getByText(/No devices found nearby/)).toBeInTheDocument();
-    expect(screen.getByText(/Click "Start Scanning" to begin searching/)).toBeInTheDocument();
+    expect(screen.getByText(/No Physical app users found nearby/)).toBeInTheDocument();
+    expect(screen.getByText(/Click "Discover Physical Users" to begin searching/)).toBeInTheDocument();
   });
 
   it('should show scanning message when scanning and no devices', () => {
@@ -306,8 +307,8 @@ describe('BluetoothProximity', () => {
 
     render(<BluetoothProximity />);
 
-    expect(screen.getByText(/Scanning for nearby devices.../)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Scanning.../i })).toBeDisabled();
+    expect(screen.getByText(/Discovering Physical app users.../)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Discovering Users.../i })).toBeDisabled();
   });
 
   it('should disable buttons when appropriate', () => {
@@ -328,8 +329,8 @@ describe('BluetoothProximity', () => {
 
     render(<BluetoothProximity />);
 
-    expect(screen.getByRole('button', { name: /Start Scanning/i })).not.toBeDisabled();
-    expect(screen.getByRole('button', { name: /Stop Scanning/i })).toBeDisabled();
-    expect(screen.getByRole('button', { name: /Clear Devices/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /Discover Physical Users/i })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: /Stop Discovery/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /Clear Users/i })).toBeDisabled();
   });
 });

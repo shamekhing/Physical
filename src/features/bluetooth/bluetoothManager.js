@@ -6,10 +6,10 @@
 import { 
   isWebBluetoothAvailable, 
   generateDeviceId, 
-  calculateDistance, 
   isWithinRange,
   debounce 
 } from '../../shared/utils.js';
+import { BluetoothServiceManager } from './bluetoothService.js';
 
 /**
  * Bluetooth Manager class for proximity detection
@@ -29,9 +29,13 @@ export class BluetoothManager {
     // Debounced device update to prevent excessive callbacks
     this.updateDevices = debounce(this._updateDevices.bind(this), 500);
     
-    // Service UUID for Physical app
-    this.serviceUuid = '0000180d-0000-1000-8000-00805f9b34fb'; // Heart Rate Service as example
-    this.characteristicUuid = '00002a37-0000-1000-8000-00805f9b34fb'; // Heart Rate Measurement
+    // Initialize Bluetooth service manager
+    this.serviceManager = new BluetoothServiceManager();
+    
+    // Scan interval for continuous discovery
+    this.scanInterval = null;
+    this.scanTimeout = 3000; // 3 seconds between scans
+    
   }
 
   /**
@@ -54,13 +58,13 @@ export class BluetoothManager {
   }
 
   /**
-   * Start scanning for nearby devices
-   * @param {Object} options - Scanning options
-   * @returns {Promise<boolean>} True if scanning started successfully
+   * Start automatic discovery of Physical app users
+   * @param {Object} options - Discovery options
+   * @returns {Promise<boolean>} True if discovery started successfully
    */
   async startScanning(options = {}) {
     if (this.isScanning) {
-      console.warn('Bluetooth scanning already in progress');
+      console.warn('Physical app discovery already in progress');
       return true;
     }
 
@@ -74,34 +78,18 @@ export class BluetoothManager {
       this.isScanning = true;
       this._notifyStatusChange('scanning');
       
-      // Request device with specific service
-      const device = await navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,
-        optionalServices: [this.serviceUuid]
-      });
-
-      // Listen for device events
-      device.addEventListener('gattserverdisconnected', this._handleDeviceDisconnected.bind(this));
+      // Start our Physical app service
+      await this.serviceManager.startService();
       
-      // Connect to device and start monitoring
-      await this._connectAndMonitor(device);
+      // Start continuous discovery of Physical app users
+      await this._startContinuousDiscovery();
       
       return true;
     } catch (error) {
       this.isScanning = false;
       this._notifyStatusChange('stopped');
-      
-      if (error.name === 'NotFoundError') {
-        console.log('No Bluetooth devices found');
-        return false;
-      } else if (error.name === 'SecurityError') {
-        const securityError = new Error('Bluetooth permission denied');
-        this._handleError(securityError);
-        return false;
-      } else {
-        this._handleError(error);
-        return false;
-      }
+      this._handleError(error);
+      return false;
     }
   }
 
@@ -114,79 +102,161 @@ export class BluetoothManager {
     }
 
     this.isScanning = false;
+    
+    // Clear scan interval
+    if (this.scanInterval) {
+      clearInterval(this.scanInterval);
+      this.scanInterval = null;
+    }
+    
+    
+    // Stop our service
+    this.serviceManager.stopService();
+    
     this.nearbyDevices.clear();
     this._notifyStatusChange('stopped');
   }
 
   /**
-   * Connect to a device and start monitoring
-   * @param {BluetoothDevice} device - The Bluetooth device to connect to
+   * Start continuous discovery of Physical app users
    * @private
    */
-  async _connectAndMonitor(device) {
+  async _startContinuousDiscovery() {
+    // Start immediate discovery
+    await this._performDiscovery();
+    
+    // Set up continuous discovery
+    this.scanInterval = setInterval(async () => {
+      if (this.isScanning) {
+        await this._performDiscovery();
+      }
+    }, this.scanTimeout);
+    
+  }
+
+  /**
+   * Perform a single discovery scan for Physical app users
+   * @private
+   */
+  async _performDiscovery() {
+    try {
+      // In a real implementation, this would scan for devices advertising our service UUID
+      // For now, we'll simulate discovery through the mock user system
+      console.log('Scanning for Physical app users...');
+      
+      // Request devices with our specific service UUID
+      const device = await navigator.bluetooth.requestDevice({
+        filters: [
+          { services: [this.serviceManager.serviceUuid] }
+        ],
+        optionalServices: [this.serviceManager.serviceUuid]
+      });
+
+      // Check if this is a Physical app user
+      if (await this._isPhysicalAppUser(device)) {
+        await this._handlePhysicalAppUser(device);
+      }
+    } catch (error) {
+      if (error.name === 'NotFoundError') {
+        // No Physical app users found in this scan - this is normal
+        console.log('No Physical app users found in this scan');
+      } else {
+        console.error('Error during discovery:', error);
+        // Re-throw non-NotFoundError errors so they can be handled by startScanning
+        throw error;
+      }
+    }
+  }
+
+
+  /**
+   * Check if a device is a Physical app user
+   * @param {BluetoothDevice} device - The device to check
+   * @returns {Promise<boolean>} True if it's a Physical app user
+   * @private
+   */
+  async _isPhysicalAppUser(device) {
     try {
       if (!device.gatt.connected) {
         await device.gatt.connect();
       }
 
-      // Get the service
-      const service = await device.gatt.getPrimaryService(this.serviceUuid);
+      // Try to read our app identifier from the device
+      const service = await device.gatt.getPrimaryService(this.serviceManager.serviceUuid);
+      const characteristic = await service.getCharacteristic(this.serviceManager.characteristicUuid);
       
-      // Get the characteristic
-      const characteristic = await service.getCharacteristic(this.characteristicUuid);
+      // Read the app identifier
+      const value = await characteristic.readValue();
+      const decoder = new TextDecoder();
+      const appId = decoder.decode(value);
       
-      // Start notifications
-      await characteristic.startNotifications();
-      
-      // Listen for characteristic value changes
-      characteristic.addEventListener('characteristicvaluechanged', 
-        this._handleCharacteristicChanged.bind(this, device));
-      
-      // Simulate proximity detection based on connection quality
-      this._simulateProximityDetection(device);
-      
+      return appId === this.serviceManager.appIdentifier;
     } catch (error) {
-      console.error('Error connecting to device:', error);
-      this._handleError(error);
+      // If we can't read the identifier, it's not a Physical app user
+      return false;
     }
   }
 
   /**
-   * Handle characteristic value changes (simulated proximity data)
-   * @param {BluetoothDevice} device - The device
-   * @param {Event} event - The characteristic value changed event
+   * Handle a discovered Physical app user
+   * @param {BluetoothDevice} device - The Physical app user device
    * @private
    */
-  _handleCharacteristicChanged(device, event) {
-    // In a real implementation, this would process actual proximity data
-    // For now, we'll simulate proximity detection
-    this._simulateProximityDetection(device);
-  }
-
-  /**
-   * Simulate proximity detection for testing
-   * @param {BluetoothDevice} device - The device to simulate
-   * @private
-   */
-  _simulateProximityDetection(device) {
-    // Simulate RSSI values between -30 and -100 dBm
-    const rssi = Math.random() * (-100 - (-30)) + (-30);
-    const distance = this._calculateDistanceFromRSSI(rssi);
-    
-    if (isWithinRange(distance)) {
-      const deviceInfo = {
-        id: device.id || generateDeviceId(),
-        name: device.name || `Device_${device.id?.substr(0, 8) || 'Unknown'}`,
-        distance: distance,
-        rssi: rssi,
-        lastSeen: new Date(),
-        connected: device.gatt.connected
-      };
+  async _handlePhysicalAppUser(device) {
+    try {
+      // Get RSSI and calculate distance
+      const rssi = await this._getDeviceRSSI(device);
+      const distance = this._calculateDistanceFromRSSI(rssi);
       
-      this.nearbyDevices.set(deviceInfo.id, deviceInfo);
-      this.updateDevices();
+      if (isWithinRange(distance)) {
+        const deviceInfo = {
+          id: device.id || generateDeviceId(),
+          name: device.name || `Physical User ${device.id?.substr(0, 8) || 'Unknown'}`,
+          distance: distance,
+          rssi: rssi,
+          lastSeen: new Date(),
+          connected: device.gatt.connected,
+          isPhysicalAppUser: true
+        };
+        
+        this.nearbyDevices.set(deviceInfo.id, deviceInfo);
+        this.updateDevices();
+      }
+      
+      // Disconnect to free up resources
+      if (device.gatt.connected) {
+        device.gatt.disconnect();
+      }
+    } catch (error) {
+      console.error('Error handling Physical app user:', error);
     }
   }
+
+  /**
+   * Get RSSI value from a device
+   * @param {BluetoothDevice} device - The device
+   * @returns {Promise<number>} RSSI value in dBm
+   * @private
+   */
+  async _getDeviceRSSI(device) {
+    // Web Bluetooth API doesn't provide direct RSSI access
+    // We'll use a fallback method based on connection quality
+    try {
+      // Try to get connection quality if available
+      if (device.gatt && device.gatt.connected) {
+        // Simulate RSSI based on connection timing and quality
+        const baseRSSI = -50; // Base RSSI for connected devices
+        const variation = (Math.random() - 0.5) * 20; // ±10 dBm variation
+        return Math.max(-100, Math.min(-30, baseRSSI + variation));
+      }
+    } catch (error) {
+      console.warn('Could not determine RSSI:', error);
+    }
+    
+    // Fallback: estimate based on connection success
+    return -60; // Default RSSI for connected devices
+  }
+
 
   /**
    * Calculate distance from RSSI value
@@ -335,6 +405,17 @@ export class BluetoothManager {
    */
   destroy() {
     this.stopScanning();
+    
+    // Clear any remaining intervals
+    if (this.scanInterval) {
+      clearInterval(this.scanInterval);
+      this.scanInterval = null;
+    }
+    
+    
+    // Destroy service manager
+    this.serviceManager.destroy();
+    
     this.callbacks = {
       onDeviceFound: null,
       onDeviceLost: null,

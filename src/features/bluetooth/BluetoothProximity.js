@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { useBluetooth } from '../features/bluetooth/useBluetooth.js';
+import { useBluetooth } from './useBluetooth.js';
 import './BluetoothProximity.css';
 
 /**
@@ -73,6 +73,7 @@ const BluetoothProximity = () => {
         <div className="error-message">
           <p>Bluetooth is not supported or available on this device.</p>
           <p>Please use a device with Bluetooth support and ensure Bluetooth is enabled.</p>
+          <p>Physical app requires Bluetooth to discover other users nearby.</p>
         </div>
       </div>
     );
@@ -100,7 +101,7 @@ const BluetoothProximity = () => {
           disabled={!canScan}
           className="btn btn-primary"
         >
-          {isScanning ? 'Scanning...' : 'Start Scanning'}
+          {isScanning ? 'Discovering Users...' : 'Discover Physical Users'}
         </button>
         
         <button 
@@ -108,7 +109,7 @@ const BluetoothProximity = () => {
           disabled={!isScanning}
           className="btn btn-secondary"
         >
-          Stop Scanning
+          Stop Discovery
         </button>
         
         <button 
@@ -116,14 +117,14 @@ const BluetoothProximity = () => {
           disabled={!hasDevices}
           className="btn btn-outline"
         >
-          Clear Devices
+          Clear Users
         </button>
       </div>
 
       <div className="device-stats">
         <div className="stat">
           <span className="stat-number">{deviceCount}</span>
-          <span className="stat-label">Total Devices</span>
+          <span className="stat-label">Total Users</span>
         </div>
         <div className="stat">
           <span className="stat-number">{getDevicesInCloseRange().length}</span>
@@ -140,19 +141,19 @@ const BluetoothProximity = () => {
       </div>
 
       <div className="devices-section">
-        <h3>Nearby Devices ({deviceCount})</h3>
+        <h3>Physical App Users Nearby ({deviceCount})</h3>
         
         {!hasDevices && !isScanning && (
           <div className="no-devices">
-            <p>No devices found nearby.</p>
-            <p>Click "Start Scanning" to begin searching for Bluetooth devices.</p>
+            <p>No Physical app users found nearby.</p>
+            <p>Click "Discover Physical Users" to begin searching for other app users.</p>
           </div>
         )}
 
         {!hasDevices && isScanning && (
           <div className="scanning-message">
             <div className="spinner"></div>
-            <p>Scanning for nearby devices...</p>
+            <p>Discovering Physical app users...</p>
           </div>
         )}
 
@@ -162,10 +163,13 @@ const BluetoothProximity = () => {
               <div key={device.id} className="device-card">
                 <div className="device-info">
                   <div className="device-name">
-                    {device.name || 'Unknown Device'}
+                    {device.name || 'Unknown Physical User'}
                   </div>
                   <div className="device-id">
                     ID: {device.id}
+                    {device.isPhysicalAppUser && (
+                      <span className="physical-badge">Physical App User</span>
+                    )}
                   </div>
                 </div>
                 
@@ -176,7 +180,7 @@ const BluetoothProximity = () => {
                   </div>
                   <div className="detail">
                     <span className="label">RSSI:</span>
-                    <span className="value">{device.rssi.toFixed(1)} dBm</span>
+                    <span className="value">{device.rssi ? device.rssi.toFixed(1) : 'N/A'} dBm</span>
                   </div>
                   <div className="detail">
                     <span className="label">Last Seen:</span>
