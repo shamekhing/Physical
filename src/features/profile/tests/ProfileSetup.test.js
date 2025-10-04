@@ -154,7 +154,7 @@ describe('ProfileSetup', () => {
       await waitFor(() => {
         expect(screen.getByText('Step 2 of 4')).toBeInTheDocument();
         expect(screen.getByText('Tell Us About Yourself')).toBeInTheDocument();
-        expect(screen.getByLabelText('Bio *')).toBeInTheDocument();
+        expect(screen.getByLabelText('Bio (Optional)')).toBeInTheDocument();
       });
     });
 
@@ -174,7 +174,7 @@ describe('ProfileSetup', () => {
       });
       
       await waitFor(() => {
-        expect(screen.getByText('Bio is required')).toBeInTheDocument();
+        // Bio is now optional, so no validation error should appear
       });
     });
 
@@ -189,7 +189,7 @@ describe('ProfileSetup', () => {
       fireEvent.click(nextButton);
       
       await waitFor(() => {
-        const bioInput = screen.getByLabelText('Bio *');
+        const bioInput = screen.getByLabelText('Bio (Optional)');
         fireEvent.change(bioInput, { target: { value: 'Test bio content' } });
         
         expect(screen.getByText('16/500 characters')).toBeInTheDocument();
@@ -224,7 +224,7 @@ describe('ProfileSetup', () => {
       fireEvent.click(nextButton);
       
       await waitFor(() => {
-        const bioInput = screen.getByLabelText('Bio *');
+        const bioInput = screen.getByLabelText('Bio (Optional)');
         fireEvent.change(bioInput, { target: { value: 'Test bio content' } });
         
         const nextButton2 = screen.getByText('Next');
@@ -255,7 +255,7 @@ describe('ProfileSetup', () => {
         const nextButton = screen.getByText('Next');
         fireEvent.click(nextButton);
         
-        expect(screen.getByText('Please select at least one interest')).toBeInTheDocument();
+        // Interests are now optional, so no validation error should appear
       });
     });
   });
@@ -287,7 +287,7 @@ describe('ProfileSetup', () => {
       fireEvent.click(nextButton);
       
       await waitFor(() => {
-        const bioInput = screen.getByLabelText('Bio *');
+        const bioInput = screen.getByLabelText('Bio (Optional)');
         fireEvent.change(bioInput, { target: { value: 'Test bio content' } });
         
         nextButton = screen.getByText('Next');
@@ -347,10 +347,8 @@ describe('ProfileSetup', () => {
       let nextButton = screen.getByText('Next');
       fireEvent.click(nextButton);
       
+      // Bio is optional, so skip to interests step
       await waitFor(() => {
-        const bioInput = screen.getByLabelText('Bio *');
-        fireEvent.change(bioInput, { target: { value: 'Test bio content' } });
-        
         nextButton = screen.getByText('Next');
         fireEvent.click(nextButton);
       });
@@ -371,7 +369,7 @@ describe('ProfileSetup', () => {
       await waitFor(() => {
         expect(mockCreateProfile).toHaveBeenCalledWith({
           displayName: 'Test User',
-          bio: 'Test bio content',
+          bio: 'Hi! I\'m new to Physical and looking forward to meeting people nearby.',
           interests: ['Technology'],
           lookingFor: 'friends',
           privacyLevel: 'friends',
@@ -407,10 +405,8 @@ describe('ProfileSetup', () => {
       let nextButton = screen.getByText('Next');
       fireEvent.click(nextButton);
       
+      // Bio is optional, so skip to interests step
       await waitFor(() => {
-        const bioInput = screen.getByLabelText('Bio *');
-        fireEvent.change(bioInput, { target: { value: 'Test bio' } });
-        
         nextButton = screen.getByText('Next');
         fireEvent.click(nextButton);
       });
@@ -521,10 +517,8 @@ describe('ProfileSetup', () => {
       let nextButton = screen.getByText('Next');
       fireEvent.click(nextButton);
       
+      // Bio is optional, so skip to interests step
       await waitFor(() => {
-        const bioInput = screen.getByLabelText('Bio *');
-        fireEvent.change(bioInput, { target: { value: 'Test bio' } });
-        
         nextButton = screen.getByText('Next');
         fireEvent.click(nextButton);
       });

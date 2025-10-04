@@ -49,6 +49,7 @@ export const useProfile = () => {
 
       // Batch state updates to avoid act() warnings
       React.startTransition(() => {
+        console.log('useProfile: Loading profile data:', { profileData, settingsData, statsData });
         setProfile(profileData);
         setSettings(settingsData);
         setStats(statsData);
@@ -87,12 +88,15 @@ export const useProfile = () => {
 
       // Create profile
       const newProfile = await managerRef.current.createProfile(processedData);
+      console.log('useProfile: Profile created:', newProfile);
       
       // Update stats
       const newStats = await managerRef.current.getProfileStats();
+      console.log('useProfile: Stats retrieved:', newStats);
       
       // Batch state updates
       React.startTransition(() => {
+        console.log('useProfile: Setting profile state:', newProfile);
         setProfile(newProfile);
         setStats(newStats);
       });

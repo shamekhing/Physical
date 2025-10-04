@@ -7,9 +7,8 @@ import React, { useState, useEffect } from 'react';
 import { useProfile } from '../hooks/useProfile.js';
 import '../styles/ProfileSetup.css';
 
-const ProfileSetup = ({ onComplete, onCancel }) => {
+const ProfileSetup = ({ createProfile, onComplete, onCancel }) => {
   const {
-    createProfile,
     loading,
     error,
     saving,
@@ -22,7 +21,7 @@ const ProfileSetup = ({ onComplete, onCancel }) => {
   // Form state
   const [formData, setFormData] = useState({
     displayName: '',
-    bio: '',
+    bio: 'Hi! I\'m new to Physical and looking forward to meeting people nearby.',
     interests: [],
     lookingFor: 'friends',
     privacyLevel: 'friends',
@@ -111,17 +110,15 @@ const ProfileSetup = ({ onComplete, onCancel }) => {
     }
 
     if (step === 2) {
-      if (!formData.bio.trim()) {
-        errors.bio = 'Bio is required';
-      } else if (formData.bio.length > 500) {
+      // Bio is now optional
+      if (formData.bio && formData.bio.length > 500) {
         errors.bio = 'Bio must be less than 500 characters';
       }
     }
 
     if (step === 3) {
-      if (formData.interests.length === 0) {
-        errors.interests = 'Please select at least one interest';
-      } else if (formData.interests.length > 10) {
+      // Interests are now optional
+      if (formData.interests.length > 10) {
         errors.interests = 'Maximum 10 interests allowed';
       }
     }
@@ -150,13 +147,21 @@ const ProfileSetup = ({ onComplete, onCancel }) => {
    * Handle form submission
    */
   const handleSubmit = async () => {
+    console.log('ProfileSetup: handleSubmit called, currentStep:', currentStep);
+    console.log('ProfileSetup: formData:', formData);
+    
     if (!validateStep(currentStep)) {
+      console.log('ProfileSetup: Validation failed for step:', currentStep);
+      console.log('ProfileSetup: Validation errors:', validationErrors);
       return;
     }
 
     try {
-      await createProfile(formData);
+      console.log('Creating profile with data:', formData);
+      const result = await createProfile(formData);
+      console.log('Profile created successfully:', result);
       if (onComplete) {
+        console.log('Calling onComplete callback');
         onComplete();
       }
     } catch (err) {
@@ -225,7 +230,7 @@ const ProfileSetup = ({ onComplete, onCancel }) => {
       <p>Write a brief bio to help others get to know you.</p>
 
       <div className="form-group">
-        <label htmlFor="bio">Bio *</label>
+        <label htmlFor="bio">Bio (Optional)</label>
         <textarea
           id="bio"
           value={formData.bio}
@@ -252,7 +257,7 @@ const ProfileSetup = ({ onComplete, onCancel }) => {
       <p>Select your interests to help others find you.</p>
 
       <div className="form-group">
-        <label>Interests *</label>
+        <label>Interests (Optional)</label>
         <div className="interests-grid">
           {availableInterests.map(interest => (
             <button

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, cleanup, act } from '@testing-library/react';
 import ProfileEdit from '../components/ProfileEdit.js';
 
 // Mock the useProfile hook
@@ -317,7 +317,9 @@ describe('ProfileEdit', () => {
       fireEvent.click(settingsTab);
       
       const saveButton = screen.getByText('Save Settings');
-      fireEvent.click(saveButton);
+      await act(async () => {
+        fireEvent.click(saveButton);
+      });
       
       await waitFor(() => {
         expect(mockUpdateSettings).toHaveBeenCalledWith({

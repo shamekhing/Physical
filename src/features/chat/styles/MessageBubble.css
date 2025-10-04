@@ -1,0 +1,157 @@
+/* MessageBubble Component Styles */
+
+.message-bubble {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.message-bubble.own {
+  flex-direction: row-reverse;
+}
+
+.message-bubble.other {
+  flex-direction: row;
+}
+
+.message-bubble.with-avatar {
+  margin-bottom: 1rem;
+}
+
+.message-avatar {
+  margin: 0 0.5rem;
+  flex-shrink: 0;
+}
+
+.message-content {
+  max-width: 70%;
+  position: relative;
+}
+
+.message-sender {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.message-bubble-content {
+  background: white;
+  border-radius: 18px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.message-bubble.own .message-bubble-content {
+  background: #2196f3;
+  color: white;
+}
+
+.message-bubble.other .message-bubble-content {
+  background: white;
+  color: #333;
+}
+
+.message-text {
+  margin: 0 0 0.5rem 0;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.message-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.message-time {
+  font-size: 0.75rem;
+}
+
+.message-status {
+  font-size: 0.75rem;
+}
+
+.message-actions {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.message-bubble.own .message-actions {
+  right: -60px;
+}
+
+.message-bubble.other .message-actions {
+  left: -60px;
+}
+
+.message-bubble:hover .message-actions {
+  opacity: 1;
+}
+
+.action-button {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button:hover {
+  background: rgba(0, 0, 0, 0.2);
+  color: #333;
+}
+
+.retry-button:hover {
+  background: #ff9800;
+  color: white;
+}
+
+.delete-button:hover {
+  background: #f44336;
+  color: white;
+}
+
+/* Message type indicators */
+.message-text::before {
+  margin-right: 0.25rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .message-content {
+    max-width: 85%;
+  }
+  
+  .message-actions {
+    position: static;
+    transform: none;
+    opacity: 1;
+    margin-top: 0.5rem;
+    justify-content: center;
+  }
+  
+  .message-bubble.own .message-actions,
+  .message-bubble.other .message-actions {
+    left: auto;
+    right: auto;
+  }
+}

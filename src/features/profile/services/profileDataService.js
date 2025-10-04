@@ -203,6 +203,16 @@ export class ProfileDataService {
   validateProfileData(data) {
     const errors = [];
 
+    // Required field validation
+    if (!data.displayName || data.displayName.trim().length === 0) {
+      errors.push('Display name is required');
+    }
+
+    if (!data.bio || data.bio.trim().length === 0) {
+      errors.push('Bio is required');
+    }
+
+    // Length validation
     if (data.displayName && data.displayName.length > 50) {
       errors.push('Display name must be less than 50 characters');
     }
@@ -211,6 +221,7 @@ export class ProfileDataService {
       errors.push('Bio must be less than 500 characters');
     }
 
+    // Type validation
     if (data.interests && !Array.isArray(data.interests)) {
       errors.push('Interests must be an array');
     }

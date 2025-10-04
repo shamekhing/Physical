@@ -23,7 +23,16 @@ export const isWebBluetoothAvailable = () => {
  * @returns {string} Unique device identifier
  */
 export const generateDeviceId = () => {
-  return 'device_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+  // Check if we already have a device ID stored
+  const storedId = localStorage.getItem('physical_device_id');
+  if (storedId) {
+    return storedId;
+  }
+  
+  // Generate new device ID and store it
+  const newId = 'device_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+  localStorage.setItem('physical_device_id', newId);
+  return newId;
 };
 
 /**

@@ -1,23 +1,25 @@
 /**
- * ProfileView Component Styles
+ * ProfileView Component Styles - iPad-inspired design
  */
 
 .profile-view {
   max-width: 800px;
   margin: 0 auto;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
 .profile-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #f5f5f7;
+  color: #1d1d1f;
   padding: 30px;
   display: flex;
   align-items: center;
   gap: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .profile-picture {
@@ -28,7 +30,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.3);
+  border: 3px solid rgba(0, 0, 0, 0.1);
   object-fit: cover;
 }
 
@@ -40,12 +42,13 @@
   margin: 0 0 8px 0;
   font-size: 1.8rem;
   font-weight: 600;
+  color: #1d1d1f;
 }
 
 .profile-age {
   margin: 0 0 15px 0;
   font-size: 1.1rem;
-  opacity: 0.9;
+  color: #86868b;
 }
 
 .profile-badges {
@@ -56,7 +59,7 @@
 
 .badge {
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 16px;
   font-size: 0.8rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -64,30 +67,33 @@
 }
 
 .badge.complete {
-  background: rgba(46, 204, 113, 0.2);
-  color: #2ecc71;
-  border: 1px solid rgba(46, 204, 113, 0.3);
+  background: #e6f7e6;
+  color: #34c759;
+  border: 1px solid #b3e6b3;
 }
 
 .badge.privacy {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.05);
+  color: #1d1d1f;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .badge.privacy.public {
-  background: rgba(52, 152, 219, 0.2);
-  color: #3498db;
+  background: #e8f4fd;
+  color: #007aff;
+  border: 1px solid #b3d9ff;
 }
 
 .badge.privacy.friends {
-  background: rgba(155, 89, 182, 0.2);
-  color: #9b59b6;
+  background: #f0f0f0;
+  color: #8e8e93;
+  border: 1px solid #d1d1d6;
 }
 
 .badge.privacy.private {
-  background: rgba(231, 76, 60, 0.2);
-  color: #e74c3c;
+  background: #ffe6e6;
+  color: #ff3b30;
+  border: 1px solid #ffb3b3;
 }
 
 .profile-actions {
@@ -110,15 +116,15 @@
 
 .profile-section h3 {
   margin: 0 0 15px 0;
-  color: #333;
+  color: #1d1d1f;
   font-size: 1.2rem;
   font-weight: 600;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding-bottom: 8px;
 }
 
 .profile-bio {
-  color: #555;
+  color: #86868b;
   line-height: 1.6;
   font-size: 1rem;
   margin: 0;
@@ -132,11 +138,12 @@
 
 .interest-tag {
   padding: 6px 12px;
-  background: #f0f0ff;
-  color: #667eea;
-  border-radius: 20px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  border-radius: 16px;
   font-size: 0.9rem;
   font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .settings-grid {
@@ -150,18 +157,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px;
-  background: #f9f9f9;
+  background: #f5f5f7;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 3px solid #1d1d1f;
 }
 
 .setting-label {
   font-weight: 500;
-  color: #333;
+  color: #1d1d1f;
 }
 
 .setting-value {
-  color: #666;
+  color: #86868b;
   font-weight: 400;
 }
 
@@ -174,34 +181,35 @@
 .stat-item {
   text-align: center;
   padding: 20px;
-  background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+  background: white;
   border-radius: 12px;
-  border: 1px solid #e0e0ff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .stat-value {
   display: block;
   font-size: 1.5rem;
-  font-weight: 700;
-  color: #667eea;
+  font-weight: 600;
+  color: #1d1d1f;
   margin-bottom: 5px;
 }
 
 .stat-label {
   font-size: 0.9rem;
-  color: #666;
+  color: #86868b;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .profile-footer {
-  background: #f8f9fa;
+  background: #f5f5f7;
   padding: 20px 30px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .privacy-notice {
-  color: #666;
+  color: #86868b;
   font-size: 0.9rem;
   line-height: 1.5;
   margin: 0;
@@ -210,35 +218,35 @@
 .loading {
   text-align: center;
   padding: 40px;
-  color: #666;
+  color: #86868b;
   font-size: 1.1rem;
 }
 
 .error-message {
   text-align: center;
   padding: 40px;
-  color: #e74c3c;
+  color: #ff3b30;
 }
 
 .error-message h3 {
   margin: 0 0 10px 0;
-  color: #c33;
+  color: #ff3b30;
 }
 
 .error-message p {
   margin: 0;
-  color: #666;
+  color: #86868b;
 }
 
 .no-profile {
   text-align: center;
   padding: 40px;
-  color: #666;
+  color: #86868b;
 }
 
 .no-profile h3 {
   margin: 0 0 10px 0;
-  color: #333;
+  color: #1d1d1f;
 }
 
 .no-profile p {
@@ -251,32 +259,34 @@
   border: none;
   border-radius: 8px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-decoration: none;
   display: inline-block;
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: #1d1d1f;
   color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: #2c2c2e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary {
   background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #1d1d1f;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .btn-secondary:hover {
-  background: #667eea;
-  color: white;
+  background: #f5f5f7;
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive design */

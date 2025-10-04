@@ -1,0 +1,140 @@
+/* MessageInput Component Styles */
+
+.message-input {
+  padding: 1rem;
+  background: white;
+}
+
+.message-input-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 24px;
+  padding: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.message-input-container:focus-within {
+  border-color: #2196f3;
+}
+
+.input-button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+}
+
+.input-button:hover:not(:disabled) {
+  background: #e9ecef;
+  color: #333;
+}
+
+.input-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-field-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-textarea {
+  border: none;
+  background: none;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  padding: 0.5rem;
+  min-height: 20px;
+  max-height: 120px;
+  color: #333;
+}
+
+.message-textarea::placeholder {
+  color: #6c757d;
+}
+
+.input-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.character-count {
+  font-size: 0.75rem;
+}
+
+.typing-indicator {
+  font-style: italic;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.send-button {
+  background: #2196f3;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+}
+
+.send-button:hover:not(:disabled) {
+  background: #1976d2;
+  transform: scale(1.05);
+}
+
+.send-button:disabled {
+  background: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.sending-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

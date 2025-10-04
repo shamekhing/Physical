@@ -77,13 +77,28 @@ describe('Utils', () => {
   });
 
   describe('generateDeviceId', () => {
+    beforeEach(() => {
+      // Clear localStorage before each test
+      localStorage.clear();
+    });
+
     it('should generate a unique device ID', () => {
       const id1 = generateDeviceId();
       const id2 = generateDeviceId();
 
       expect(id1).toMatch(/^device_[a-z0-9]{9}_\d+$/);
       expect(id2).toMatch(/^device_[a-z0-9]{9}_\d+$/);
-      expect(id1).not.toBe(id2);
+      expect(id1).toBe(id2); // Should be the same due to localStorage persistence
+    });
+
+    it('should return the same ID on subsequent calls', () => {
+      const id1 = generateDeviceId();
+      const id2 = generateDeviceId();
+      const id3 = generateDeviceId();
+
+      expect(id1).toBe(id2);
+      expect(id2).toBe(id3);
+      expect(id1).toBe(id3);
     });
 
     it('should start with device_ prefix', () => {

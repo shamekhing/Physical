@@ -65,13 +65,22 @@ export class ProfileManager {
       isActive: true
     };
 
+    console.log('ProfileManager: Creating profile with deviceId:', this.deviceId);
+    console.log('ProfileManager: Profile data:', profile);
+
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['profiles'], 'readwrite');
       const store = transaction.objectStore('profiles');
       const request = store.add(profile);
 
-      request.onsuccess = () => resolve(profile);
-      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        console.log('ProfileManager: Profile created successfully in database');
+        resolve(profile);
+      };
+      request.onerror = () => {
+        console.error('ProfileManager: Error creating profile:', request.error);
+        reject(request.error);
+      };
     });
   }
 
@@ -81,13 +90,21 @@ export class ProfileManager {
   async getProfile() {
     if (!this.db) await this.init();
 
+    console.log('ProfileManager: Getting profile for deviceId:', this.deviceId);
+
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['profiles'], 'readonly');
       const store = transaction.objectStore('profiles');
       const request = store.get(this.deviceId);
 
-      request.onsuccess = () => resolve(request.result || null);
-      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        console.log('ProfileManager: Retrieved profile:', request.result);
+        resolve(request.result || null);
+      };
+      request.onerror = () => {
+        console.error('ProfileManager: Error getting profile:', request.error);
+        reject(request.error);
+      };
     });
   }
 
