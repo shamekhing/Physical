@@ -8,8 +8,8 @@ import {
   generateDeviceId, 
   isWithinRange,
   debounce 
-} from '../../shared/utils.js';
-import { BluetoothServiceManager } from './bluetoothService.js';
+} from '../../../shared/utils.js';
+import { BluetoothServiceManager } from '../services/bluetoothService.js';
 
 /**
  * Bluetooth Manager class for proximity detection

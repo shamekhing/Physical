@@ -4,8 +4,8 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { BluetoothManager } from './bluetoothManager.js';
-import { formatDistance } from '../../shared/utils.js';
+import { BluetoothManager } from '../services/bluetoothManager.js';
+import { formatDistance } from '../../../shared/utils.js';
 
 /**
  * Custom hook for Bluetooth proximity detection

@@ -1,4 +1,4 @@
-import { generateDeviceId } from '../../shared/utils.js';
+import { generateDeviceId } from '../../../shared/utils.js';
 
 /**
  * Age Verification Manager - Privacy-First Implementation

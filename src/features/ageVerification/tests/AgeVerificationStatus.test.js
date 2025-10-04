@@ -7,7 +7,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import AgeVerificationStatus from './AgeVerificationStatus.js';
+import AgeVerificationStatus from '../components/AgeVerificationStatus.js';
 
 describe('AgeVerificationStatus', () => {
   describe('rendering', () => {

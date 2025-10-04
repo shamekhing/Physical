@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAgeVerification } from './useAgeVerification.js';
-import './AgeVerificationStatus.css';
+import { useAgeVerification } from '../hooks/useAgeVerification.js';
+import '../styles/AgeVerificationStatus.css';
 
 /**
  * Age Verification Status Component

@@ -3,11 +3,11 @@
  */
 
 import { renderHook, act } from '@testing-library/react';
-import { useBluetooth } from './useBluetooth.js';
-import { BluetoothManager } from './bluetoothManager.js';
+import { useBluetooth } from '../hooks/useBluetooth.js';
+import { BluetoothManager } from '../services/bluetoothManager.js';
 
 // Mock the BluetoothManager
-jest.mock('./bluetoothManager.js');
+jest.mock('../services/bluetoothManager.js');
 
 describe('useBluetooth', () => {
   let mockBluetoothManager;

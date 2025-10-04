@@ -3,7 +3,7 @@
  * Handles the Physical app-specific Bluetooth service for user discovery
  */
 
-import { generateDeviceId } from '../../shared/utils.js';
+import { generateDeviceId } from '../../../shared/utils.js';
 
 /**
  * Bluetooth Service Manager for Physical app

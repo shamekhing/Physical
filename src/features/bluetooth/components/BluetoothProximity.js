@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import { useBluetooth } from './useBluetooth.js';
-import './BluetoothProximity.css';
+import { useBluetooth } from '../hooks/useBluetooth.js';
+import '../styles/BluetoothProximity.css';
 
 /**
  * Bluetooth Proximity Detection Component

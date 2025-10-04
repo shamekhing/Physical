@@ -5,11 +5,11 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import BluetoothProximity from './BluetoothProximity.js';
-import { useBluetooth } from './useBluetooth.js';
+import BluetoothProximity from '../components/BluetoothProximity.js';
+import { useBluetooth } from '../hooks/useBluetooth.js';
 
 // Mock the useBluetooth hook
-jest.mock('./useBluetooth.js');
+jest.mock('../hooks/useBluetooth.js');
 
 describe('BluetoothProximity', () => {
   const mockUseBluetooth = useBluetooth;

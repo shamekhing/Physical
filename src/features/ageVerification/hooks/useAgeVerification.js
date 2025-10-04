@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { AgeVerificationManager } from './ageVerificationManager.js';
-import { BiometricAgeEstimator } from './biometricAgeEstimator.js';
-import { DocumentVerifier } from './documentVerifier.js';
+import { AgeVerificationManager } from '../services/ageVerificationManager.js';
+import { BiometricAgeEstimator } from '../services/biometricAgeEstimator.js';
+import { DocumentVerifier } from '../services/documentVerifier.js';
 
 /**
  * Custom React hook for age verification functionality

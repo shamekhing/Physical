@@ -2,7 +2,7 @@
  * Tests for BluetoothManager
  */
 
-import { BluetoothManager } from './bluetoothManager.js';
+import { BluetoothManager } from '../services/bluetoothManager.js';
 
 // Mock Web Bluetooth API
 const mockBluetoothDevice = {

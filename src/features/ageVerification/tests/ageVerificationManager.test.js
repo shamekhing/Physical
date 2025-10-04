@@ -3,7 +3,7 @@
  * Privacy-first age verification with no external data collection
  */
 
-import { AgeVerificationManager } from './ageVerificationManager.js';
+import { AgeVerificationManager } from '../services/ageVerificationManager.js';
 
 // Mock Web Crypto API
 const mockCrypto = {

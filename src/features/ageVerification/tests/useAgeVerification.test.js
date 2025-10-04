@@ -5,7 +5,7 @@
  */
 
 import { renderHook, act } from '@testing-library/react';
-import { useAgeVerification } from './useAgeVerification.js';
+import { useAgeVerification } from '../hooks/useAgeVerification.js';
 
 describe('useAgeVerification', () => {
   describe('initialization', () => {

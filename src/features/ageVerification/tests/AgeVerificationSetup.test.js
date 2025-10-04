@@ -6,15 +6,15 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import AgeVerificationSetup from './AgeVerificationSetup.js';
+import AgeVerificationSetup from '../components/AgeVerificationSetup.js';
 
 // Mock the useAgeVerification hook
-jest.mock('./useAgeVerification.js', () => ({
+jest.mock('../hooks/useAgeVerification.js', () => ({
   useAgeVerification: jest.fn()
 }));
 
 describe('AgeVerificationSetup', () => {
-  const mockUseAgeVerification = require('./useAgeVerification.js').useAgeVerification;
+  const mockUseAgeVerification = require('../hooks/useAgeVerification.js').useAgeVerification;
 
   const defaultMockReturn = {
     status: 'idle',
