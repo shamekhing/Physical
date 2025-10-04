@@ -4,7 +4,9 @@ This React application is configured for deployment to GitHub Pages using both m
 
 ## Repository Setup
 
-Your repository should be named `physical` and located at `https://github.com/shsuw/physical` for the deployment to work correctly with the current configuration.
+Your repository should be named `physical` and located at `https://github.com/shamekhing/Physical` for the deployment to work correctly with the current configuration.
+
+**Important:** The `gh-pages` branch has been created and your React app has been deployed successfully!
 
 ## Deployment Methods
 
@@ -23,7 +25,7 @@ Your repository should be named `physical` and located at `https://github.com/sh
 This will:
 - Build the project for production
 - Deploy the `build` folder to the `gh-pages` branch
-- Make your site available at `https://shsuw.github.io/physical`
+- Make your site available at `https://shamekhing.github.io/Physical`
 
 ### Method 2: Automated Deployment (Recommended)
 
@@ -44,11 +46,11 @@ The project includes a GitHub Actions workflow (`.github/workflows/deploy.yml`) 
 3. **Monitor deployment:**
    - Go to the "Actions" tab in your repository
    - Watch the deployment workflow run
-   - Your site will be available at `https://shsuw.github.io/physical` once complete
+   - Your site will be available at `https://shamekhing.github.io/Physical` once complete
 
 ## Configuration Details
 
-- **Homepage URL:** `https://shsuw.github.io/physical`
+- **Homepage URL:** `https://shamekhing.github.io/Physical`
 - **Build Output:** `build/` directory
 - **Deploy Branch:** `gh-pages`
 - **Source Branch:** `main`
