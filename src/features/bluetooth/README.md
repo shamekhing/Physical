@@ -113,11 +113,41 @@ function App() {
 
 ## 🔒 Privacy & Security
 
-- **No Location Data** - Uses Bluetooth proximity only, no GPS
+### Data Security
+- **No Location Data** - Uses Bluetooth proximity only, no GPS tracking
 - **App-specific Filtering** - Only discovers other Physical app users
-- **Local Storage** - All data stays on device
-- **No Server Communication** - Direct device-to-device discovery
-- **Permission-based** - Requires explicit Bluetooth permission
+- **Local Storage Only** - All discovered device data stays on your device
+- **No Server Communication** - Direct device-to-device discovery, no data sent to servers
+- **Permission-based** - Requires explicit user permission for Bluetooth access
+- **Ephemeral Data** - Device data cleared when you stop scanning or close app
+
+### Connection Security
+- **Not End-to-End Encrypted** - Bluetooth discovery itself is NOT encrypted
+- **Device IDs Only** - No personal information transmitted during discovery
+- **No Automatic Pairing** - Discovery only, no automatic device pairing
+- **User Control** - You control when to start/stop discovery
+
+### What's Shared During Discovery
+- ✅ Random device ID (changes each session)
+- ✅ Physical app identifier ("PHYSICAL_APP_v1")
+- ✅ Bluetooth signal strength (for distance calculation)
+- ❌ NO personal information
+- ❌ NO location data
+- ❌ NO chat messages
+- ❌ NO profile data
+
+### Security Recommendations
+1. **Use in Safe Environments** - Only enable discovery in appropriate settings
+2. **Stop When Done** - Turn off discovery when not actively looking for users
+3. **Verify Users** - The app shows who's nearby, but verify identity before sharing personal info
+4. **Report Issues** - Report any suspicious behavior through the app
+
+### Technical Security Details
+- **Bluetooth Low Energy (BLE)** - Uses standard BLE protocols
+- **UUID-based Filtering** - Custom service UUID prevents non-app devices from appearing
+- **Web Bluetooth API** - Browser-controlled security model
+- **HTTPS Required** - App must run on HTTPS for Bluetooth access
+- **No Background Access** - Scanning stops when app is closed or backgrounded
 
 ## 🌐 Browser Compatibility
 

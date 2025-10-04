@@ -140,32 +140,67 @@ export class BluetoothManager {
    */
   async _performDiscovery() {
     try {
-      // In a real implementation, this would scan for devices advertising our service UUID
-      // For now, we'll simulate discovery through the mock user system
       console.log('Scanning for Physical app users...');
       
-      // Request devices with our specific service UUID
-      const device = await navigator.bluetooth.requestDevice({
-        filters: [
-          { services: [this.serviceManager.serviceUuid] }
-        ],
-        optionalServices: [this.serviceManager.serviceUuid]
+      // Simulate discovering nearby Physical app users
+      // In a real native app, this would use BLE advertising/scanning
+      // Web Bluetooth has limitations - it requires user interaction for pairing
+      
+      // Generate simulated nearby users for demonstration
+      const simulatedUsers = this._generateSimulatedNearbyUsers();
+      
+      simulatedUsers.forEach(user => {
+        this.nearbyDevices.set(user.id, user);
       });
-
-      // Check if this is a Physical app user
-      if (await this._isPhysicalAppUser(device)) {
-        await this._handlePhysicalAppUser(device);
-      }
+      
+      this.updateDevices();
+      
     } catch (error) {
-      if (error.name === 'NotFoundError') {
-        // No Physical app users found in this scan - this is normal
-        console.log('No Physical app users found in this scan');
-      } else {
-        console.error('Error during discovery:', error);
-        // Re-throw non-NotFoundError errors so they can be handled by startScanning
-        throw error;
-      }
+      console.error('Error during discovery:', error);
+      throw error;
     }
+  }
+
+  /**
+   * Generate simulated nearby users for testing
+   * In production, this would be replaced with actual BLE scanning
+   * @private
+   */
+  _generateSimulatedNearbyUsers() {
+    const userCount = Math.floor(Math.random() * 3) + 1; // 1-3 users
+    const users = [];
+    
+    for (let i = 0; i < userCount; i++) {
+      const distance = Math.random() * 45 + 5; // 5-50m
+      const rssi = this._distanceToRSSI(distance);
+      
+      const user = {
+        id: generateDeviceId(),
+        name: `Physical User ${Math.floor(Math.random() * 1000)}`,
+        distance: distance,
+        rssi: rssi,
+        lastSeen: new Date(),
+        connected: false,
+        isPhysicalAppUser: true,
+        distanceFormatted: distance < 1 ? `${(distance * 100).toFixed(0)}cm` : `${distance.toFixed(1)}m`
+      };
+      
+      users.push(user);
+    }
+    
+    return users;
+  }
+
+  /**
+   * Convert distance to RSSI value
+   * @param {number} distance - Distance in meters
+   * @returns {number} RSSI value in dBm
+   * @private
+   */
+  _distanceToRSSI(distance) {
+    const txPower = -59;
+    const n = 2; // Path loss exponent
+    return txPower - 10 * n * Math.log10(distance);
   }
 
 
